@@ -229,7 +229,7 @@ main() {
     -I PREROUTING 1 \
     -p tcp --dport 80 \
     -j REDIRECT \
-    --to-ports 8080
+    --to-ports 80
 
   if ! id -u jsproxy > /dev/null 2>&1 ; then
     log "创建用户 jsproxy ..."
@@ -240,7 +240,7 @@ main() {
   log "切换到 jsproxy 用户，执行安装脚本 ..."
   su - jsproxy -c "$cmd"
 
-  local line=$(iptables -t nat -nL --line-numbers | grep "tcp dpt:80 redir ports 8080")
+  local line=$(iptables -t nat -nL --line-numbers | grep "tcp dpt:80 redir ports 80")
   iptables -t nat -D PREROUTING ${line%% *}
 
   log "安装完成。后续维护参考 https://github.com/EtherDream/jsproxy"
